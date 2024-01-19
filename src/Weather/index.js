@@ -1,11 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
-import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import Search from "./Search";
-import SearchHistory from "./SearchHistory";
-import background from "./assets/background.png";
-import { getTime } from "./utils/getTime";
+import Search from "../Search";
+import SearchHistory from "../SearchHistory";
+import { getTime } from "../utils/getTime";
+import { PageContainer } from "./styled";
 
 const Weather = () => {
   const [searchHistory, setSearchHistory] = useState([]);
@@ -18,11 +17,13 @@ const Weather = () => {
     setLocation(location);
   };
 
+  // Clear search text and reset location search to blank
   const clearSearchText = () => {
     setLocation("");
     searchLocation("");
   };
 
+  // Search location's weather & save to search history
   const searchLocation = async (location) => {
     try {
       const response = await axios.get(
@@ -49,6 +50,7 @@ const Weather = () => {
     }
   };
 
+  // Delete a specific search history on button click
   const deleteHistory = (id) => {
     const newSearchHistory = [...searchHistory].filter(
       (search) => search.id !== id
@@ -76,29 +78,5 @@ const Weather = () => {
     </PageContainer>
   );
 };
-
-const PageContainer = styled.div`
-  padding: 0 20px;
-  color: white;
-  min-height: 100vh;
-  background: url(${background}) center;
-  background-size: cover;
-`;
-
-export const Header = styled.div`
-  font-size: 40px;
-  font-weight: 700;
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid #f8f8f8;
-`;
-
-export const NoRecordContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 30px;
-  min-height: 100%;
-`;
 
 export default Weather;

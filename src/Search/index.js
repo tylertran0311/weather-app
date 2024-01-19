@@ -1,4 +1,4 @@
-import { Header, NoRecordContainer } from "../Weather";
+import { Header, NoRecordContainer } from "../Weather/styled";
 import ClearIcon from "../icons/ClearIcon";
 import { capitalize } from "../utils/capitalize";
 import {
@@ -41,7 +41,9 @@ const Search = ({
             value={location}
             onChange={(e) => handleInputChange(e.target.value)}
             placeholder="Enter a location"
-            onKeyUp={(e) => e.key === "Enter" && searchLocation(e.target.value)}
+            onKeyDown={(e) =>
+              e.key === "Enter" && searchLocation(e.target.value)
+            }
           />
           <ClearButton onClick={() => clearSearchText()}>
             <ClearIcon />

@@ -1,3 +1,4 @@
+// Converting from UNIX time to Date string
 export const getTime = (timezone) => {
   const localTime = new Date().getTime();
   const localOffset = new Date().getTimezoneOffset() * 60000;

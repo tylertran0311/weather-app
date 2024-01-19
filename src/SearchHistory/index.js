@@ -1,4 +1,4 @@
-import { Header, NoRecordContainer } from "../Weather";
+import { Header, NoRecordContainer } from "../Weather/styled";
 import DeleteIcon from "../icons/DeleteIcon";
 import SearchIcon from "../icons/SearchIcon";
 import {
