@@ -6,7 +6,7 @@ export const SearchHistoryContent = styled.div`
   border-radius: 25px;
   border: 1px solid rgba(255, 255, 255, 0);
   background-color: rgba(255, 255, 255, 0.1);
-  height: 300px;
+  height: 18.75rem;
   overflow-y: auto;
 `;
 

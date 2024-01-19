@@ -1,5 +1,6 @@
 import { Header, NoRecordContainer } from "../Weather";
 import ClearIcon from "../icons/ClearIcon";
+import { capitalize } from "../utils/capitalize";
 import {
   CityName,
   ClearButton,
@@ -15,7 +16,9 @@ import {
   WeatherDescCollumn,
   WeatherDescContainer,
   WeatherDescRow,
+  WeatherIcon,
   WeatherStatus,
+  WeatherStatusContainer,
   WeatherStatusDesc,
 } from "./styled";
 
@@ -26,6 +29,7 @@ const Search = ({
   data,
   location,
   time,
+  weatherIcon,
 }) => {
   return (
     <>
@@ -37,6 +41,7 @@ const Search = ({
             value={location}
             onChange={(e) => handleInputChange(e.target.value)}
             placeholder="Enter a location"
+            onKeyUp={(e) => e.key === "Enter" && searchLocation(e.target.value)}
           />
           <ClearButton onClick={() => clearSearchText()}>
             <ClearIcon />
@@ -50,9 +55,14 @@ const Search = ({
       {data ? (
         <WeatherContainer>
           <CityName>{`${data.name}, ${data.sys.country}`}</CityName>
-          <WeatherStatus>{data.weather && data.weather[0].main}</WeatherStatus>
+          <WeatherStatusContainer>
+            <WeatherIcon src={weatherIcon} />
+            <WeatherStatus>
+              {data.weather && data.weather[0].main}
+            </WeatherStatus>
+          </WeatherStatusContainer>
           <WeatherStatusDesc>
-            {data.weather && data.weather[0].description}
+            {data.weather && capitalize(data.weather[0].description)}
           </WeatherStatusDesc>
           <WeatherDescContainer>
             <WeatherDescRow>
@@ -68,9 +78,7 @@ const Search = ({
                 <DescTitle>Temperature</DescTitle>
               </WeatherDescCollumn>
               <WeatherDescCollumn>
-                <DescDetail>
-                  {data.main && `${data.main.humidity}%`}
-                </DescDetail>
+                <DescDetail>{data.main && `${data.main.humidity}%`}</DescDetail>
                 <DescTitle>Humidity</DescTitle>
               </WeatherDescCollumn>
             </WeatherDescRow>

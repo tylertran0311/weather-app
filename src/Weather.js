@@ -12,6 +12,7 @@ const Weather = () => {
   const [data, setData] = useState(null);
   const [location, setLocation] = useState("");
   const [time, setTime] = useState();
+  const [weatherIcon, setWeatherIcon] = useState();
 
   const handleInputChange = (location) => {
     setLocation(location);
@@ -22,28 +23,30 @@ const Weather = () => {
     searchLocation("");
   };
 
-  const searchLocation = (location) => {
-    axios
-      .get(
+  const searchLocation = async (location) => {
+    try {
+      const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=2b7cca634b280b856a70f87fa568ed11`
-      )
-      .then((res) => {
-        setData(res.data);
-        setTime(getTime(res.data.timezone));
-        setSearchHistory([
-          ...searchHistory,
-          {
-            name: `${res.data.name}, ${res.data.sys.country} `,
-            time: new Date().toLocaleTimeString("en-US"),
-            id: uuidv4(),
-          },
-        ]);
-        console.log(res.data);
-      })
-      .catch((err) => {
-        setData(null);
-        console.log(err);
-      });
+      );
+      const iconName = await response.data.weather[0].icon;
+      setData(response.data);
+      setTime(getTime(response.data.timezone));
+      setSearchHistory([
+        ...searchHistory,
+        {
+          name: `${response.data.name}, ${response.data.sys.country} `,
+          time: new Date().toLocaleTimeString("en-US"),
+          id: uuidv4(),
+        },
+      ]);
+      setWeatherIcon(
+        "http://openweathermap.org/img/wn/" + iconName + "@2x.png"
+      );
+    } catch (e) {
+      const message = await e.message;
+      setData(null);
+      console.log(message);
+    }
   };
 
   const deleteHistory = (id) => {
@@ -63,6 +66,7 @@ const Weather = () => {
         handleInputChange={handleInputChange}
         clearSearchText={clearSearchText}
         searchLocation={searchLocation}
+        weatherIcon={weatherIcon}
       />
       <SearchHistory
         searchHistory={searchHistory}
@@ -76,7 +80,7 @@ const Weather = () => {
 const PageContainer = styled.div`
   padding: 0 20px;
   color: white;
-  height: 100vh;
+  min-height: 100vh;
   background: url(${background}) center;
   background-size: cover;
 `;
